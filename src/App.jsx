@@ -9,14 +9,12 @@ import Landing from "./components/landing.jsx";
 export default function App() {
     return (
         <BrowserRouter>
-            <div className="min-h-screen flex flex-col">
+            <div className="h-screen overflow-y-scroll custom-scrollbar">
                 <Header />
-                <main className="flex-grow overflow-y-auto custom-scrollbar bg-black">
-                    <Routes>
-                        <Route path="/" element={<Landing />} />
-                        <Route path="/maingame" element={<MainGame />} />
-                    </Routes>
-                </main>
+                <Routes>
+                    <Route path="/" element={<Landing />} />
+                    <Route path="/maingame" element={<MainGame />} />
+                </Routes>
                 <Footer />
             </div>
         </BrowserRouter>

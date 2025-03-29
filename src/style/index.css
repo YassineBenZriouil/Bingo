@@ -17,20 +17,6 @@ h6 {
 }
 @layer utilities {
     .custom-scrollbar {
-        scrollbar-width: thin;
-        scrollbar-color: #60a5fa #172554;
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 5px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: #172554;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #60a5fa;
-        border-radius: 10px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #60a5fa;
+        scrollbar-width: none;
     }
 }

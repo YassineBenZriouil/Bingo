@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { showToast } from "../utility/showToast";
 import { ToastContainer } from "react-toastify";
+import Animations from "../utility/animations";
 
 const Wordle = () => {
     const [SOLUTION, setSolution] = useState("");
@@ -9,6 +10,7 @@ const Wordle = () => {
     const [currentGuess, setCurrentGuess] = useState("");
     const [gameOver, setGameOver] = useState(false);
     const [showConfetti, setShowConfetti] = useState(false);
+    localStorage.setItem("GN", parseInt(localStorage.getItem("GN") || "0") + 1);
 
     const generateConfetti = () => {
         const colors = [
@@ -169,102 +171,110 @@ const Wordle = () => {
     const letterStates = calculateLetterStates();
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-black text-white py-4">
-            <ToastContainer />
-            <div className="mb-8">
-                {guesses.map((guess, i) => {
-                    const isCurrentRow =
-                        guess === null &&
-                        guesses.findIndex((g) => g === null) === i;
-
-                    return (
-                        <div key={i} className="flex mb-2">
-                            {Array(5)
-                                .fill(0)
-                                .map((_, j) => {
-                                    let letter = "";
-                                    let bgColor = "bg-gray-900 border-gray-700";
-
-                                    if (guess) {
-                                        letter = guess[j] || "";
-                                        if (letter === SOLUTION[j])
-                                            bgColor =
-                                                "bg-green-600 border-green-500";
-                                        else if (SOLUTION.includes(letter))
-                                            bgColor =
-                                                "bg-yellow-600 border-yellow-500";
-                                        else
-                                            bgColor =
-                                                "bg-gray-700 border-gray-600";
-                                    } else if (isCurrentRow) {
-                                        letter = currentGuess[j] || "";
-                                    }
-
-                                    return (
-                                        <div
-                                            key={j}
-                                            className={`w-12 h-12 border-2 flex items-center justify-center mx-1 text-2xl font-bold ${bgColor}`}
-                                        >
-                                            {letter}
-                                        </div>
-                                    );
-                                })}
-                        </div>
-                    );
-                })}
-            </div>
-
-            <div className="mb-4">
-                {keyboard.map((row, i) => (
-                    <div key={i} className="flex justify-center mb-2">
-                        {row.map((key) => {
-                            const width =
-                                key === "ENTER" || key === "DELETE"
-                                    ? "w-15"
-                                    : "w-10";
-                            const bgColor = letterStates[key] || "bg-gray-800";
+        <div className="bg-black text-white">
+            <Animations>
+                <div className="flex flex-col items-center min-h-screen  py-4">
+                    <ToastContainer />
+                    <div className="mb-8">
+                        {guesses.map((guess, i) => {
+                            const isCurrentRow =
+                                guess === null &&
+                                guesses.findIndex((g) => g === null) === i;
 
                             return (
-                                <button
-                                    key={key}
-                                    onClick={() => handleKeyClick(key)}
-                                    className={`${width} h-12 mx-1 text-sm font-bold rounded ${bgColor} hover:opacity-80`}
-                                >
-                                    {key === "DELETE" ? "⌫" : key}
-                                </button>
+                                <div key={i} className="flex mb-2">
+                                    {Array(5)
+                                        .fill(0)
+                                        .map((_, j) => {
+                                            let letter = "";
+                                            let bgColor =
+                                                "bg-gray-900 border-gray-700";
+
+                                            if (guess) {
+                                                letter = guess[j] || "";
+                                                if (letter === SOLUTION[j])
+                                                    bgColor =
+                                                        "bg-green-600 border-green-500";
+                                                else if (
+                                                    SOLUTION.includes(letter)
+                                                )
+                                                    bgColor =
+                                                        "bg-yellow-600 border-yellow-500";
+                                                else
+                                                    bgColor =
+                                                        "bg-gray-700 border-gray-600";
+                                            } else if (isCurrentRow) {
+                                                letter = currentGuess[j] || "";
+                                            }
+
+                                            return (
+                                                <div
+                                                    key={j}
+                                                    className={`w-12 h-12 border-2 flex items-center justify-center mx-1 text-2xl font-bold ${bgColor}`}
+                                                >
+                                                    {letter}
+                                                </div>
+                                            );
+                                        })}
+                                </div>
                             );
                         })}
                     </div>
-                ))}
-            </div>
 
-            {gameOver && (
-                <button
-                    onClick={resetGame}
-                    className="bg-white text-black px-8 py-2 rounded-lg text-xl font-semibold hover:bg-gray-200 transition-colors cursor-pointer"
-                >
-                    PLAY AGAIN
-                </button>
-            )}
+                    <div className="mb-4">
+                        {keyboard.map((row, i) => (
+                            <div key={i} className="flex justify-center mb-2">
+                                {row.map((key) => {
+                                    const width =
+                                        key === "ENTER" || key === "DELETE"
+                                            ? "w-15"
+                                            : "w-10";
+                                    const bgColor =
+                                        letterStates[key] || "bg-gray-800";
 
-            {showConfetti && (
-                <div className="fixed inset-0 pointer-events-none overflow-hidden">
-                    {confetti.map((piece) => (
-                        <div
-                            key={piece.id}
-                            className="absolute rounded-full"
-                            style={{
-                                left: `${piece.x}%`,
-                                top: `${piece.y}%`,
-                                width: `${piece.size}px`,
-                                height: `${piece.size}px`,
-                                backgroundColor: piece.color,
-                                transform: `rotate(${piece.rotation}deg)`,
-                            }}
-                        />
-                    ))}
+                                    return (
+                                        <button
+                                            key={key}
+                                            onClick={() => handleKeyClick(key)}
+                                            className={`${width} h-12 mx-1 text-sm font-bold rounded ${bgColor} hover:opacity-80`}
+                                        >
+                                            {key === "DELETE" ? "⌫" : key}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        ))}
+                    </div>
+
+                    {gameOver && (
+                        <button
+                            onClick={resetGame}
+                            className="bg-white text-black px-8 py-2 rounded-lg text-xl font-semibold hover:bg-gray-200 transition-colors cursor-pointer"
+                        >
+                            PLAY AGAIN
+                        </button>
+                    )}
+
+                    {showConfetti && (
+                        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+                            {confetti.map((piece) => (
+                                <div
+                                    key={piece.id}
+                                    className="absolute rounded-full"
+                                    style={{
+                                        left: `${piece.x}%`,
+                                        top: `${piece.y}%`,
+                                        width: `${piece.size}px`,
+                                        height: `${piece.size}px`,
+                                        backgroundColor: piece.color,
+                                        transform: `rotate(${piece.rotation}deg)`,
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
+            </Animations>
         </div>
     );
 };

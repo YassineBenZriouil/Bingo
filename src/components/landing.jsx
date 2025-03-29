@@ -23,7 +23,7 @@ const BingoStartScreen = () => {
                         </Link>
                         <div className="flex flex-col mt-8 text-sm gap-5">
                             <p>{dateTime}</p>
-                            <p>Game Number : {gameNumber}</p>
+
                             <p>
                                 Edited by{" "}
                                 <a

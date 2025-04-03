@@ -1,9 +1,11 @@
 // components/Header.js
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Popup from "../components/htp"; // Import Popup component
+import Popup from "../components/htp";
+import { useNavigate } from "react-router-dom";
 
 export default function Header({ theme, setTheme }) {
+    const navigate = useNavigate();
     const [showNavMenu, setShowNavMenu] = useState(false);
     const [showPopup, setShowPopup] = useState(false); // State for the popup visibility
 
@@ -14,7 +16,7 @@ export default function Header({ theme, setTheme }) {
     const closePopup = () => setShowPopup(false); // Close popup
 
     const handleWinReload = () => {
-        window.location.reload();
+        navigate(0);
     };
 
     return (

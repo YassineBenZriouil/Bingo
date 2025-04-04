@@ -16,7 +16,7 @@ export default function Header({ theme, setTheme }) {
     const closePopup = () => setShowPopup(false); // Close popup
 
     const handleWinReload = () => {
-        navigate(0);
+        window.location.reload(); // Reload the current page
     };
 
     return (
